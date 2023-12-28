@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Java FastFood</title>
+
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/Nguoidung.css}" rel="stylesheet" />
+    <link th:href="@{/css/display.css}" rel="stylesheet" />
+    <link th:href="@{/css/muluc.css}" rel="stylesheet" />
+    <link th:href="@{/css/tieude.css}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+
+</head>
+
+<body id="page-top">
+<th:block th:replace="~{layout :: header}"></th:block>
+<!-- Header-->
+<header class="masthead bg-image text-center text-white" id="hinhnen"  style="width: 100vw; height: 40vh;">
+    <div class="masthead-content">
+        <div class="container px-10">
+            <h1 class="masthead-heading mb-0" style="color: #ff5733; font-size: 36px;">Thức ăn nhanh mà xịn </h1>
+            <h2 class="masthead-subheading mb-0">ngon - bổ - rẻ</h2>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="empty-message" th:if="${size == 0}">
+        <p>Danh sách sản phẩm</p>
+    </div>
+
+    <h2 >Danh sách sản phẩm</h2>
+    <input type="text" id="searchInput" placeholder="Tìm nhanh sản phẩm...">
+    <div class="product-container">
+        <div th:each="product : ${products}" class="product">
+            <div class="product-item">
+                <img th:src="${product.completeImage}" alt="Product Image" style="width: 230px;height: 230px;" onclick="viewProductDetails('${product.id}')">
+                <div class="product-info">
+                    <h3 th:text="${product.name}"></h3>
+                    <p th:text="${#numbers.formatDecimal(product.costPrice, 0, 3)} + 'VNĐ '"></p>
+                    <form th:action="@{/homes/add-to-cart}" method="post" class="d-inline">
+                        <input type="hidden" th:value="${product.id}" name="id">
+                        <input type="hidden" name="name" th:value="${product.getName()}">
+                        <input type="hidden" name="costPrice" th:value="${product.getCostPrice()}">
+                        <input type="hidden" name="productImage" th:value="${product.completeImage}">
+                        <div class="add-to-cart" style="text-align: center;">
+                            <button type="submit" class="btn btn-success" onclick="return confirm(' Bạn là một thiên thần xứng đáng có món này !')"> Thêm vào giỏ !</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>Về chúng tôi</h3>
+                <p>Chúng tôi mang đến sứ mệnh mang đến những món hàng ngon - bổ - rẻ cùng với chất lượng cao cho khách hàng.</p>
+            </div>
+            <div class="col">
+                <h3>Thông tin liên hệ</h3>
+                <p>Địa chỉ: 19-23 Tân Cảng, Quận Bình Thạnh, Thành Phố Hồ Chí Minh</p>
+                <p>Email: vanthang27009@gmail.com</p>
+                <p>Phone: (09)-390-289-61</p>
+            </div>
+            <div class="col">
+                <h3>Theo dõi chúng tôi</h3>
+                <ul class="social-media">
+                    <li class="facebook"><a href="https://www.facebook.com/r.asher.2016/"><i class="fab fa-facebook"></i></a></li>
+                    <li class="instagram"><a href="https://www.facebook.com/profile.php?id=100015092977710"><i class="fab fa-instagram"></i></a></li>
+                    <li class="youtube"><a href="https://www.facebook.com/n2b299"><i class="fab fa-youtube"></i></a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2023 Java FastFood. All rights reserved.</p>
+    </div>
+</footer>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const productList = document.querySelectorAll('.product-item');
+
+    searchInput.addEventListener('input', function (event) {
+        const searchText = event.target.value.toLowerCase();
+
+        productList.forEach(function (product) {
+            const name = product.querySelector('h3').textContent.toLowerCase();
+
+            if (name.includes(searchText)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
+

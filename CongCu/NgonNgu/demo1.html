@@ -1,0 +1,70 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div id="demo"> DEMOOOO</div>
+        <script>
+        callAllAPI();
+            //getIdAndChangeProperty();
+            function getIdAndChangeProperty(){
+                var demo = document.getElementById("demo");
+                    demo.style.color="blue";
+            }
+            function sleepFor(sleepDuration){
+                var now = new Date().getTime();
+                while(new Date().getTime() < now + sleepDuration){
+                        /* What do u want ?*/
+                }
+                console.log('Sleep');
+            }
+
+
+            function allAsynFunction(){
+                asynFuntion("function 1");
+                asynFuntion("function 2");
+                asynFuntion("function 3");  
+            }
+
+            async function callAllAPI(){
+                await readAPI("funtionName1");
+                // await readAPI("funtionName2");
+                // await readAPI("funtionName3");
+            }
+
+            function clickItem(id){
+                window.location.href = "http://fastfoodservice.somee.com/"
+            }
+
+            async function readAPI(functionName){
+                console.log("start" + functionName);
+                var response = await fetch("https://dummyjson.com/product");
+                var data = await response.json();
+                console.log(functionName + " " + data);
+                var demo = document.getElementById("demo");
+                var htmlStr="";
+                for (var i = 0; i < data.products.length;i++){
+                    htmlStr += `<div onclick = "clickItem(${data.products[i].id})"> ${data.products[i].id} --- ${data.products[i].title } </div>`;
+
+                    // var div = document.createElement("div");
+                    // var idNode = document.createTextNode(data.products[i].id+ " - ");
+                    // var titleNode = document.createTextNode(data.products[i].title);
+
+                    // div.appendChild(idNode);
+                    // div.appendChild(titleNode);
+                    // demo.appendChild(div);
+
+                }
+                demo.innerHTML =htmlStr;
+                console.log("End " + functionName);
+            }
+                
+            function asynFuntion(functionName){
+                        console.log(functionName + "Start")
+                        sleepFor( 2 , functionName);
+                        console.log(functionName + "End");
+
+                    }   
+        </script>
+    </body>
+</html>

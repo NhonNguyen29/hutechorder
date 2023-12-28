@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý đơn hàng</title>
+    <th:block th:replace="layout :: link-css"></th:block>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<th:block th:replace="layout :: header"></th:block>
+<div class="container" th:style="'margin-top: 100px;'">
+    <h1>Danh sách đơn hàng</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên người dùng</th>
+            <th>Tổng chi phí</th>
+            <th>Chi tiết</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.user.username}"></td>
+            <td th:text="${order.totalPrice}"></td>
+            <!-- Thêm các cột khác tùy ý -->
+            <td>
+                <a th:href="@{/order/details/{orderId}(orderId=${order.id})}">
+                    <button class="btn btn-detail">Chi tiết</button>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<th:block th:replace="layout :: footer"></th:block>
+</body>
+
+</html>
+
+<script th:inline="javascript">
+    function sendEmail() {
+        // Sử dụng AJAX để gửi yêu cầu POST tới URL "/send-email"
+        $.ajax({
+            type: "POST",
+            url: "/send-email",
+            success: function(response) {
+                // Xử lý phản hồi từ server nếu cần thiết
+                alert("Email đã được gửi tới chủ của đơn hàng.");
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi nếu có
+                alert("Đã xảy ra lỗi khi gửi email.");
+            }
+        });
+    }
+</script>
